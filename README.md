@@ -1,4 +1,4 @@
-# stenoread.js
+# StenoRead.js
 [Stenographer](https://github.com/google/stenographer) API packet reader in Node, piping out *steaming hot* PCAP data
 
 -----
