@@ -1,8 +1,10 @@
 # stenoread.js
 Stenographer API packet reader in Node, piping out steaming hot PCAP data
 
+-----
+
 #### Requirements
-* stenographer w/ certs on same system
+* stenographer w/ `pem` certificates on same host
 
 ### Setup
 ```
