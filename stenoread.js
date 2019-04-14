@@ -4,15 +4,17 @@ var fs = require('fs');
 var https = require('https');
 const args = process.argv.slice(2);
 
+// Allow Self-Signed Certificates
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
+// Read Stenographer configuration
 var CONFIG = JSON.parse(fs.readFileSync("/etc/stenographer/config"));
 var HOST   = CONFIG.Host || '127.0.0.1';
 var PORT   = CONFIG.Port || '1234';
 var CPATH  = CONFIG.CertPath || "/etc/stenographer/certs";
 
+// Check for Query
 if (!args[0]) { console.error('Missing query!'); process.exit(1); }
-
 var query = args[0];
 
 var options = {
@@ -31,7 +33,6 @@ var req = https.request(options, function(res) {
     });
 });
 req.write(query);
-
 req.end();
 req.on('error', function(e) {
     console.error(e);
