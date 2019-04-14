@@ -4,7 +4,9 @@
 -----
 
 #### Requirements
-* stenographer w/ `pem` certificates on same host
+* stenographer
+  * configuration in `/etc/stenographer/config`
+  * `pem` certificates in `certPath`
 
 ### Setup
 ```
