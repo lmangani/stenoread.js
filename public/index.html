@@ -2,16 +2,18 @@
 <html>
 <head>
 <title>stenoremote</title>
+<style>
+  .hide { position:absolute; top:-1px; left:-1px; width:1px; height:1px; }
+</style>
 </head>
 <body>
 <pre>
-       __                                                          __
-      /\ \__                                                      /\ \__
-  ____\ \ ,_\    __    ___     ___   _ __    __    ___ ___     ___\ \ ,_\    __
- /',__\\ \ \/  /'__`\/' _ `\  / __`\/\`'__\/'__`\/' __` __`\  / __`\ \ \/  /'__`\
-/\__, `\\ \ \_/\  __//\ \/\ \/\ \L\ \ \ \//\  __//\ \/\ \/\ \/\ \L\ \ \ \_/\  __/
-\/\____/ \ \__\ \____\ \_\ \_\ \____/\ \_\\ \____\ \_\ \_\ \_\ \____/\ \__\ \____\
- \/___/   \/__/\/____/\/_/\/_/\/___/  \/_/ \/____/\/_/\/_/\/_/\/___/  \/__/\/____/
+     _                     __                _    _     
+ ___| |_ ___ _ __   ___   /__\ ___  __ _  __| |  (_)___ 
+/ __| __/ _ \ '_ \ / _ \ / \/// _ \/ _` |/ _` |  | / __|
+\__ \ ||  __/ | | | (_) / _  \  __/ (_| | (_| |_ | \__ \
+|___/\__\___|_| |_|\___/\/ \_/\___|\__,_|\__,_(_)/ |___/
+                                               |__/     
 
 Examples:
 host 8.8.8.8          		# Single IP address (hostnames not allowed)
@@ -24,13 +26,15 @@ before 45m ago			# Packets before a relative time
 before 3h ago         		# Packets after a relative time
 <pre>
 
-<form action='/query' method='POST'>
+<form action='/query' method='POST' target="hiddenFrame">
 Steno Query: <input type='text' name='query' size=25 />
 <!--
 Output Name: <input type='text' name='fname' size=25 />
 -->
-<input type='submit' name='submit' value='Grab!' />
+<input type='submit' name='submit' value='Get PCAP' />
 </form>
+
+<iframe name="hiddenFrame" class="hide"></iframe>
 
 </body>
 </html>
