@@ -35,15 +35,17 @@ npm start server
 |___/\__\___|_| |_|\___/\/ \_/\___|\__,_|\__,_(_)/ |___/
                                                |__/     
                                                
-host 8.8.8.8          		       # Single IP address (hostnames not allowed)
-net 10.0.0.0/8        		       # Network with CIDR
-port 23               		       # Port number (UDP or TCP)
-icmp                 		        # Specific protocol
-before 2019-04-01T11:05:00Z	   # Packets before a specific time (UTC)
-after 2019-04-01T11:05:00-0700	# Packets after a specific time (with TZ)
-before 45m ago			              # Packets before a relative time
-before 3h ago         		       # Packets after a relative time
 ```
+| Query        | Usecase           |
+| ------------ |:-------------:|
+| host 8.8.8.8    | Single IP address (hostnames not allowed)    |
+| net 10.0.0.0/8  | Network with CIDR    |
+| port 23         | Port number (UDP or TCP)     |
+| icmp            | Specific protocol    |
+| before 2019-04-01T11:05:00Z    | Packets before a specific time (UTC)    |
+| after 2019-04-01T11:05:00-0700    | Packets after a specific time (with TZ)    |
+| before 45m ago		| Packets before a relative time    |
+| after 10m ago   | Packets after a relative time    |
 
 ##### Credits
 * HTML form and Ascii Art from https://github.com/vesche/stenoremote
