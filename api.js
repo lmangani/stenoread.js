@@ -12,12 +12,24 @@ fastify.register(require('fastify-static'), {
 })
 
 fastify.get('/', function (req, reply) {
-  reply.sendFile('index.html')
+  if(req.query.query){
+   console.log('Running GET query:',req.query.query)
+   const cmd = './stenoread.js "'+req.query.query+'"';
+   // await Query completion and return full response
+	var stdout = exec(cmd);
+	var ts = new Date().getTime();
+	reply.header('Content-disposition', 'attachment; filename= steno_'+ts+".pcap");
+        reply.type('application/octet-stream')
+	if (stdout) { reply.send( stdout ) }
+	else { console.error('failed query',req.query.query); reply.send(500) }
+  } else {  
+    reply.sendFile('index.html')
+  }
 })
 
 fastify.post('/query', (req, reply) => {
    if(!req.body || !req.body.query) { reply.send('missing query!'); return; }
-   console.log('Running query:',req.body.query)
+   console.log('Running POST query:',req.body.query)
    const cmd = './stenoread.js "'+req.body.query+'"';
    // await Query completion and return full response
 	var stdout = exec(cmd);
