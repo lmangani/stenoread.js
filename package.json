@@ -1,12 +1,13 @@
 {
   "name": "stenoread",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Stenographer API packet reader in NodeJS",
   "main": "stenoread.js",
   "bin": {
     "stenoread.js": "./stenoread.js"
   },
   "scripts": {
+    "start": "node ./api.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,5 +25,10 @@
   "bugs": {
     "url": "https://github.com/lmangani/stenoread.js/issues"
   },
-  "homepage": "https://github.com/lmangani/stenoread.js#readme"
+  "homepage": "https://github.com/lmangani/stenoread.js#readme",
+  "dependencies": {
+    "fastify": "^2.3.0",
+    "fastify-formbody": "^3.1.0",
+    "fastify-static": "^2.4.0"
+  }
 }
