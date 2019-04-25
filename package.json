@@ -28,6 +28,7 @@
   "homepage": "https://github.com/lmangani/stenoread.js#readme",
   "dependencies": {
     "fastify": "^2.3.0",
+    "fastify-cors": "^2.1.2",
     "fastify-formbody": "^3.1.0",
     "fastify-static": "^2.4.0"
   }
