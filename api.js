@@ -4,6 +4,10 @@ const fastify = require('fastify')()
 const path = require('path')
 const exec = require('child_process').execSync;
 
+fastify.register(require('fastify-cors'), { 
+  "Access-Control-Allow-Origin": "*"
+})
+
 fastify.register(require('fastify-formbody'))
 
 fastify.register(require('fastify-static'), {
