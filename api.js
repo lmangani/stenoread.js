@@ -31,6 +31,22 @@ fastify.get('/', function (req, reply) {
   }
 })
 
+fastify.get('/:query/pcap', function (req, reply) {
+  if(req.params.query){
+   console.log('Running GET query:',req.params.query)
+   const cmd = './stenoread.js "'+req.params.query+'"';
+   // await Query completion and return full response
+	const stdout = exec(cmd);
+	var ts = new Date().getTime();
+	reply.header('Content-disposition', 'attachment; filename="steno_'+ts+".pcap");
+        reply.type('application/octet-stream')
+	if (stdout) { reply.send( stdout ) }
+	else { console.error('failed query',req.params.query); reply.code(500) }
+  } else {  
+    reply.sendFile('index.html')
+  }
+})
+
 fastify.post('/query', (req, reply) => {
    if(!req.body || !req.body.query) { reply.send('missing query!'); return; }
    console.log('Running POST query:',req.body.query)

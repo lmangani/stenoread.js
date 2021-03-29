@@ -47,6 +47,16 @@ npm start server
 | before 45m ago		| Packets before a relative time    |
 | after 10m ago   | Packets after a relative time    |
 
+#### API
+PCAP data can be requested via insecure GET requests
+```
+/{query}/pcap
+```
+Example:
+```
+wget "http://myserver:3000/port 22 and after 1m ago/pcap
+```
+
 ##### Credits
 * HTML form and Ascii Art from https://github.com/vesche/stenoremote
 * Stenographer, Stenoread & Co are derived from https://github.com/google/stenographer

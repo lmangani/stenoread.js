@@ -1,6 +1,6 @@
 {
   "name": "stenoread",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Stenographer API packet reader in NodeJS",
   "main": "stenoread.js",
   "bin": {
