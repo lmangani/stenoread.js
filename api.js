@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const port = process.env.PORT || 1235;
+
 const fastify = require('fastify')()
 const path = require('path')
 const exec = require('child_process').execSync;
@@ -61,7 +63,7 @@ fastify.post('/query', (req, reply) => {
 
 })
 
-fastify.listen(3000, '0.0.0.0', err => {
+fastify.listen(port, '0.0.0.0', err => {
   if (err) throw err
   console.log(`server listening on ${fastify.server.address().port}`)
 })
