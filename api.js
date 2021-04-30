@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const port = process.env.PORT || 1235;
+
 const fastify = require('fastify')()
 const path = require('path')
 const exec = require('child_process').execSync;

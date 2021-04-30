@@ -48,13 +48,15 @@ npm start server
 | after 10m ago   | Packets after a relative time    |
 
 #### API
-PCAP data can be requested via insecure GET requests
+PCAP data can be requested via insecure GET/POST requests
 ```
 /{query}/pcap
+/query?query
 ```
-Example:
+Examples:
 ```
-wget "http://myserver:3000/port 22 and after 1m ago/pcap
+wget -qO- "http://localhost:1235/port 22 and after 1m ago/pcap | tshark -r /dev/stdin
+curl 'http://localhost:1235/query' --data-raw 'query=port 22 and after 1m ago' | tshark -r /dev/stdin
 ```
 
 ##### Credits
