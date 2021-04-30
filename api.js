@@ -4,55 +4,39 @@ const fastify = require('fastify')()
 const path = require('path')
 const exec = require('child_process').execSync;
 
+const args = require('minimist')(process.argv.slice(2));
+const debug = args.debug || false;
+
 fastify.register(require('fastify-formbody'))
-
-fastify.register(require('fastify-static'), {
-  root: path.join(__dirname, 'public'),
-  prefix: '/public/'
-})
-
-fastify.register(require('fastify-cors'), { 
+fastify.register(require('fastify-cors'), {
   origin: '*'
-})
-
-fastify.get('/', function (req, reply) {
-  if(req.query.query){
-   console.log('Running GET query:',req.query.query)
-   const cmd = './stenoread.js "'+req.query.query+'"';
-   // await Query completion and return full response
-	const stdout = exec(cmd);
-	var ts = new Date().getTime();
-	reply.header('Content-disposition', 'attachment; filename= steno_'+ts+".pcap");
-        reply.type('application/octet-stream')
-	if (stdout) { reply.send( stdout ) }
-	else { console.error('failed query',req.query.query); reply.code(500) }
-  } else {  
-    reply.sendFile('index.html')
-  }
 })
 
 fastify.get('/:query/pcap', function (req, reply) {
   if(req.params.query){
-   console.log('Running GET query:',req.params.query)
+   if (debug) console.log('Running GET query:',req.params.query)
    const cmd = './stenoread.js "'+req.params.query+'"';
    // await Query completion and return full response
-	const stdout = exec(cmd);
+	const stdout = exec(cmd, {maxBuffer: 50 * 1024 * 1024});
 	var ts = new Date().getTime();
 	reply.header('Content-disposition', 'attachment; filename="steno_'+ts+".pcap");
         reply.type('application/octet-stream')
 	if (stdout) { reply.send( stdout ) }
 	else { console.error('failed query',req.params.query); reply.code(500) }
-  } else {  
+  } else {
     reply.sendFile('index.html')
   }
 })
 
 fastify.post('/query', (req, reply) => {
-   if(!req.body || !req.body.query) { reply.send('missing query!'); return; }
-   console.log('Running POST query:',req.body.query)
-   const cmd = './stenoread.js "'+req.body.query+'"';
+   if(!req.body) { reply.send('missing query!',req.body); return; }
+   if (debug) console.log('Running POST query:',req.body)
+   var query = parseQuery(req.body);
+   console.log('Resolved query:',query)
+   if(!query) return;
+   const cmd = './stenoread.js "'+query+'"';
    // await Query completion and return full response
-	const stdout = exec(cmd);
+	const stdout = exec(cmd, {maxBuffer: 50 * 1024 * 1024});
 	var ts = new Date().getTime();
 	reply.header('Content-disposition', 'attachment; filename= steno_'+ts+".pcap");
         reply.type('application/octet-stream')
@@ -61,7 +45,20 @@ fastify.post('/query', (req, reply) => {
 
 })
 
-fastify.listen(3000, '0.0.0.0', err => {
+fastify.listen(args.port ||3000, args.host || '0.0.0.0', err => {
   if (err) throw err
   console.log(`server listening on ${fastify.server.address().port}`)
 })
+
+
+const parseQuery = function(q){
+  if (!q.params || !q.timestamp) return false;
+  var limit = q.limit || false;
+  var rules = [];
+  q.params.forEach(function(pair){
+	var tmp = "(host "+pair.ip+" and port "+pair.port+")";
+	rules.push(tmp);
+  });
+  var query = rules.join(" or ") + " and (after "+new Date(q.timestamp.from).toISOString()+" and before "+ new Date(q.timestamp.to).toISOString() +")";
+  return query;
+}
