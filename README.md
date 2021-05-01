@@ -20,10 +20,10 @@ npm install -g stenoread
 stenoread.js "port 5060 and after 1m ago" | tshark -r /dev/stdin
 ```
 
-#### WEB Usage
-A simple UI can be served to run insecure queries via web
+#### WEB/API Usage
+A simple UI can be served to run http/s queries via web
 ```
-npm start server
+stenoserve.js --port 443 --certPath /etc/letsencrypt/live/my.domain
 ```
 
 ## Usage Examples
@@ -51,7 +51,6 @@ npm start server
 PCAP data can be requested via insecure GET/POST requests
 ```
 /{query}/pcap
-/query?query
 ```
 Examples:
 ```

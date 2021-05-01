@@ -1,13 +1,27 @@
 #!/usr/bin/env node
 
-const port = process.env.PORT || 1235;
-
-const fastify = require('fastify')()
+const fs = require('fs');
+const http2 = require('http2');
+const Fastify = require('fastify');
 const path = require('path')
 const exec = require('child_process').execSync;
 
 const args = require('minimist')(process.argv.slice(2));
 const debug = args.debug || false;
+
+const fastify = Fastify({
+  logger: true,
+  http2: true,
+  ...( args.certPath && { https: {
+    key: fs.readFileSync(`${args.certPath}/privkey.pem`),
+    cert: fs.readFileSync(`${args.certPath}/fullchain.pem`)
+  }})
+});
+
+fastify.register(require('fastify-static'), {
+  root: path.join(__dirname, 'public'),
+  prefix: '/public/'
+})
 
 fastify.register(require('fastify-formbody'))
 fastify.register(require('fastify-cors'), {
