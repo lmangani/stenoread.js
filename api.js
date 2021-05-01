@@ -11,7 +11,7 @@ const debug = args.debug || false;
 
 const fastify = Fastify({
   logger: true,
-  http2: true,
+  http2: false,
   ...( args.certPath && { https: {
     key: fs.readFileSync(`${args.certPath}/privkey.pem`),
     cert: fs.readFileSync(`${args.certPath}/fullchain.pem`)
@@ -72,7 +72,13 @@ const parseQuery = function(q){
   var limit = q.limit || false;
   var rules = [];
   q.params.forEach(function(pair){
-	var tmp = "(host "+pair.ip+" and port "+pair.port+")";
+	var tmp;
+	//if(pair.dst_ip) tmp = "((host "+pair.src_ip+" or host "+pair.dst_ip+") and (port "+pair.src_port+" or port "+pair.dst_port+"))";
+	//else tmp = "(host "+pair.src_ip+" and port "+pair.src_port+")";
+
+	if(pair.dst_ip) tmp = "("+pair.proto+" and ((host "+pair.src_ip+" and port "+pair.src_port+") and (host "+pair.dst_ip+" and port "+pair.dst_port+")))";
+	else tmp = "("+pair.proto+" and host "+pair.src_ip+" and port "+pair.src_port+")";
+
 	rules.push(tmp);
   });
   var query = rules.join(" or ") + " and (after "+new Date(q.timestamp.from).toISOString()+" and before "+ new Date(q.timestamp.to).toISOString() +")";
