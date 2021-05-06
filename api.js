@@ -75,8 +75,8 @@ const parseQuery = function(q){
 	var tmp;
 	//if(pair.dst_ip) tmp = "((host "+pair.src_ip+" or host "+pair.dst_ip+") and (port "+pair.src_port+" or port "+pair.dst_port+"))";
 	//else tmp = "(host "+pair.src_ip+" and port "+pair.src_port+")";
-
-	if(pair.dst_ip) tmp = "("+pair.proto+" and ((host "+pair.src_ip+" and port "+pair.src_port+") and (host "+pair.dst_ip+" and port "+pair.dst_port+")))";
+	if(pair.hash) tmp = "(hash "+pair.hash+")";
+	else if(pair.dst_ip) tmp = "("+pair.proto+" and ((host "+pair.src_ip+" and port "+pair.src_port+") and (host "+pair.dst_ip+" and port "+pair.dst_port+")))";
 	else tmp = "("+pair.proto+" and host "+pair.src_ip+" and port "+pair.src_port+")";
 
 	rules.push(tmp);
