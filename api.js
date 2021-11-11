@@ -29,7 +29,7 @@ fastify.register(require('fastify-cors'), {
 })
 
 
-const token = args.token.toString() || false;
+const token = args.token?.toString() || false;
 if (token){
   const authenticate = {realm: 'pcap'}
   fastify.register(require('fastify-basic-auth'), { validate, authenticate })
