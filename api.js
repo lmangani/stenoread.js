@@ -28,6 +28,23 @@ fastify.register(require('fastify-cors'), {
   origin: '*'
 })
 
+
+const token = args.token.toString() || false;
+if (token){
+  const authenticate = {realm: 'pcap'}
+  fastify.register(require('fastify-basic-auth'), { validate, authenticate })
+  function validate (username, password, req, reply, done) {
+    if (username === token || password === token) {
+      done()
+    } else {
+      done(new Error('Unauthorized'))
+    }
+  }
+  fastify.after(() => {
+    fastify.addHook('onRequest', fastify.basicAuth);
+  })
+}
+
 fastify.get('/:query/pcap', function (req, reply) {
   if(req.params.query){
    if (debug) console.log('Running GET query:',req.params.query)
@@ -47,7 +64,7 @@ fastify.get('/:query/pcap', function (req, reply) {
 fastify.post('/query', (req, reply) => {
    if(!req.body) { reply.send('missing query!',req.body); return; }
    if (debug) console.log('Running POST query:',req.body)
-   var query = parseQuery(req.body);
+   var query = req.body.query || parseQuery(req.body);
    console.log('Resolved query:',query)
    if(!query) return;
    const cmd = './stenoread.js "'+query+'"';
@@ -58,7 +75,6 @@ fastify.post('/query', (req, reply) => {
         reply.type('application/octet-stream')
 	if (stdout) { reply.send( stdout ) }
 	else { console.error('failed query',req.body.query); reply.code(500) }
-
 })
 
 fastify.listen(args.port ||3000, args.host || '0.0.0.0', err => {
@@ -68,7 +84,8 @@ fastify.listen(args.port ||3000, args.host || '0.0.0.0', err => {
 
 
 const parseQuery = function(q){
-  if (!q.params || !q.timestamp) return false;
+  if (q.query) return q.query;
+  if (!q.params || !q.timestamp) return q;
   var limit = q.limit || false;
   var rules = [];
   q.params.forEach(function(pair){

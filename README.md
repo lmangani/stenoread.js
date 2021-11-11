@@ -23,7 +23,7 @@ stenoread.js "port 5060 and after 1m ago" | tshark -r /dev/stdin
 #### WEB/API Usage
 A simple UI can be served to run http/s queries via web
 ```
-stenoserve.js --port 443 --certPath /etc/letsencrypt/live/my.domain
+stenoserve.js --port 443 --token 1234pcap --certPath /etc/letsencrypt/live/my.domain
 ```
 
 ## Usage Examples
@@ -53,9 +53,13 @@ PCAP data can be requested via insecure GET/POST requests
 /{query}/pcap
 ```
 Examples:
+###### POST
+```
+curl 'http://localhost:1235/query' --data-raw 'query=port 22 and after 1m ago' | tshark -r /dev/stdin
+```
+###### GET
 ```
 wget -qO- "http://localhost:1235/port 22 and after 1m ago/pcap | tshark -r /dev/stdin
-curl 'http://localhost:1235/query' --data-raw 'query=port 22 and after 1m ago' | tshark -r /dev/stdin
 ```
 
 ##### Credits
