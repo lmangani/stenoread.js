@@ -32,7 +32,7 @@
     "fastify-basic-auth": "^2.1.0",
     "fastify-cors": "^2.1.2",
     "fastify-formbody": "^3.1.0",
-    "fastify-static": "^2.4.0",
+    "fastify-static": "^4.4.1",
     "minimist": "^1.2.5"
   }
 }
