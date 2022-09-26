@@ -1,15 +1,14 @@
+<img src="https://user-images.githubusercontent.com/1423657/192254578-fb9f19c9-1ef2-4f3d-9c9a-e28d3830a09d.png" width=400>
 
+### [Stenographer](https://github.com/google/stenographer) API packet reader in Node, piping out *steaming hot* PCAP data
 
-# stenoRead.js
-[Stenographer](https://github.com/google/stenographer) API packet reader in Node, piping out *steaming hot* PCAP data
+<br>
 
-
------
-
-#### Requirements
+### Requirements
 * stenographer
   * configuration in `/etc/stenographer/config`
-  * `pem` certificates in `certPath`
+  * `pem` certificates in `certPath` _(optional)_
+* nodejs 14-16.x
 
 ### Setup
 ```
