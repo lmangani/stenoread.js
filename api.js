@@ -9,7 +9,9 @@ const exec = require('child_process').execSync;
 const args = require('minimist')(process.argv.slice(2));
 const debug = args.debug || false;
 
+// Allow Self-Signed Certificates
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+
 const fastify = Fastify({
   logger: true,
   http2: false,
