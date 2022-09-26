@@ -26,6 +26,15 @@ A simple UI can be served to run http/s queries via web
 stenoserve.js --port 443 --token 1234pcap --certPath /etc/letsencrypt/live/my.domain
 ```
 
+#### Service Usage
+Serve and manage the API as a system service using `pm2`
+```
+npm install -g stenoread pm2
+pm2 start stenoserve.js -- --port `9069 --token 1234pcap
+pm2 save
+pm2 startup
+```
+
 ## Usage Examples
 ```
      _                     __                _    _     
