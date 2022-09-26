@@ -21,7 +21,7 @@ stenoread.js "port 5060 and after 1m ago" | tshark -r /dev/stdin
 ```
 
 #### WEB/API Usage
-A simple UI can be served to run http/s queries via web
+A simple UI can be served to run http/s queries via web _(optional certPath)_
 ```
 stenoserve.js --port 443 --token 1234pcap --certPath /etc/letsencrypt/live/my.domain
 ```
