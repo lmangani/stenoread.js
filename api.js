@@ -9,6 +9,7 @@ const exec = require('child_process').execSync;
 const args = require('minimist')(process.argv.slice(2));
 const debug = args.debug || false;
 
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 const fastify = Fastify({
   logger: true,
   http2: false,
@@ -48,7 +49,7 @@ if (token){
 fastify.get('/:query/pcap', function (req, reply) {
   if(req.params.query){
    if (debug) console.log('Running GET query:',req.params.query)
-   const cmd = './stenoread.js "'+req.params.query+'"';
+   const cmd = 'stenoread.js "'+req.params.query+'"';
    // await Query completion and return full response
 	const stdout = exec(cmd, {maxBuffer: 50 * 1024 * 1024});
 	var ts = new Date().getTime();
@@ -67,7 +68,7 @@ fastify.post('/query', (req, reply) => {
    var query = req.body.query || parseQuery(req.body);
    console.log('Resolved query:',query)
    if(!query) return;
-   const cmd = './stenoread.js "'+query+'"';
+   const cmd = 'stenoread.js "'+query+'"';
    // await Query completion and return full response
 	const stdout = exec(cmd, {maxBuffer: 50 * 1024 * 1024});
 	var ts = new Date().getTime();
